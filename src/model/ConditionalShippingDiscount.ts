@@ -1,4 +1,7 @@
-import { shippingDiscountTable } from '../static/shipping_discount.js';
+import {
+  IDiscountsInnerJoinConditionShippingDiscount,
+  discounts_inner_join_condition_shipping_discount,
+} from '../static/discount_conditional_discout.js';
 import { inRange } from '../util/inRange.js';
 import { Discount } from './Discount.js';
 
@@ -32,41 +35,36 @@ export class ConditionalShippingDiscount
     discountCode: string;
     originalPrice: number;
   }): Promise<number> {
-    // Getting discount from discount table,
-    // for production this should be replaced
-    // with a join call between the two tables(discounts & condition_shipping_discounts)
-    const result = await Discount.getDiscount({ discountCode, originalPrice });
-
-    // if the result from the discount model is not valid, then no need to proceed
-    if (!(result && result.discount && result['discountPrice'])) return 0;
-
     //
-    const { discount, discountPrice } = result;
+    const row =
+      await ConditionalShippingDiscount.getJoinedByDiscountIdAndQueriesByDiscountCode(
+        discountCode,
+      );
 
-    // using discount_id, getting shipping discount conditions
-    const shippingDiscount = await this.getByDiscountId(discount.id);
-
-    // Checking if it matches, conditional shipping discount's rules, and return the discounted price if it does
     if (
-      shippingDiscount &&
-      inRange(
-        shippingDiscount.min_distance,
-        shippingDiscount.max_distance,
-        distance,
-      ) &&
-      inRange(shippingDiscount.min_weight, shippingDiscount.max_weight, weight)
+      !row ||
+      // Early returning original price if conditional not matches
+      !(
+        inRange(row.min_distance, row.max_distance, distance) &&
+        inRange(row.min_weight, row.max_weight, weight)
+      )
     ) {
-      return discountPrice;
+      return originalPrice;
     }
 
-    return originalPrice;
+    // Get discounted price based on the discounted type logic
+    return Discount.getDiscountedPrice({
+      discount: row,
+      originalPrice,
+    });
   }
 
-  /** */
-  private static async getByDiscountId(
-    discountId: string,
-  ): Promise<ConditionalShippingDiscount | null> {
-    // For production use, we must use a real db and index the discount id column
-    return shippingDiscountTable[discountId] || null;
+  /** Assume this is a join call between the two tables */
+  static async getJoinedByDiscountIdAndQueriesByDiscountCode(
+    discountCode: string,
+  ): Promise<IDiscountsInnerJoinConditionShippingDiscount> {
+    return (
+      discounts_inner_join_condition_shipping_discount[discountCode] || null
+    );
   }
 }
