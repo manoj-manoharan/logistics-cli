@@ -1,6 +1,6 @@
 import { inRange } from '../src/util/inRange.js';
 
-describe('Testing is whole number function', () => {
+describe('Testing is number in range between (inclusive) min and max', () => {
   //
   it('-100, 0, 100 should be true', () => {
     expect(inRange({ min: -100, val: 0, max: 100 })).toBe(true);
