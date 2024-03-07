@@ -1,7 +1,7 @@
 import { ConditionalShippingDiscount } from '../../../model/ConditionalShippingDiscount.js';
-import { IShippingCheckout } from './IShippingCheckout.js';
+import { ICart } from './ICart.js';
 
-interface IShippingCheckoutProps {
+interface ICartProps {
   baseCost: number;
   totalDistance: number;
   totalWeight: number;
@@ -10,7 +10,7 @@ interface IShippingCheckoutProps {
   discountCode: string;
 }
 
-export class ShippingCheckout implements IShippingCheckout {
+export class Cart implements ICart {
   private _baseCost: number;
   private _totalWeight: number;
   private _totalDistance: number;
@@ -27,7 +27,7 @@ export class ShippingCheckout implements IShippingCheckout {
     unitDistanceCost = -1,
     unitWeightCost = -1,
     discountCode,
-  }: IShippingCheckoutProps) {
+  }: ICartProps) {
     this._baseCost = baseCost;
     this._totalWeight = totalWeight;
     this._totalDistance = totalDistance;
@@ -36,7 +36,7 @@ export class ShippingCheckout implements IShippingCheckout {
     this._discountCode = discountCode;
   }
 
-  /** We calculate the total cost of sending the container through the transport by combining all the costs */
+  /** Deriving the total cost */
   getLinePrice(): number {
     // TODO : Validation required
     return (
