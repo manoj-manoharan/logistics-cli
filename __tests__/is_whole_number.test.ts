@@ -14,4 +14,8 @@ describe('Testing is whole number function', () => {
   it('-1 should be false', () => {
     expect(isWholeNumber(-1)).toBe(false);
   });
+
+  it('Object should be false', () => {
+    expect(isWholeNumber({})).toBe(false);
+  });
 });
