@@ -2,7 +2,7 @@ import { shippingDiscountTable } from '../static/shipping_discount.js';
 import { inRange } from '../util/inRange.js';
 import { Discount, IDiscountProps } from './Discount.js';
 
-export interface IShippingDiscountProps {
+export interface IConditionalShippingDiscountProps {
   id: string;
   discount_id: string;
   min_distance: number;
@@ -11,7 +11,9 @@ export interface IShippingDiscountProps {
   max_weight: number;
 }
 
-export class ShippingDiscount implements IShippingDiscountProps {
+export class ConditionalShippingDiscount
+  implements IConditionalShippingDiscountProps
+{
   id: string;
   discount_id: string;
   min_distance: number;
@@ -60,7 +62,7 @@ export class ShippingDiscount implements IShippingDiscountProps {
   /** */
   private static async getByDiscountId(
     discountId: string,
-  ): Promise<ShippingDiscount | null> {
+  ): Promise<ConditionalShippingDiscount | null> {
     // For production use, we must use a real db and index the discount id column
     return shippingDiscountTable[discountId] || null;
   }
