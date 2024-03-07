@@ -1,6 +1,6 @@
 import { shippingDiscountTable } from '../static/shipping_discount.js';
 import { inRange } from '../util/inRange.js';
-import { Discount, IDiscountProps } from './Discount.js';
+import { Discount } from './Discount.js';
 
 export interface IConditionalShippingDiscountProps {
   id: string;
@@ -21,29 +21,32 @@ export class ConditionalShippingDiscount
   min_weight: number;
   max_weight: number;
 
-  static async getDiscount({
+  static async getDiscountedPrice({
     distance = 0,
     weight = 0,
     discountCode,
+    originalPrice = 0,
   }: {
     distance: number;
     weight: number;
     discountCode: string;
-  }): Promise<Pick<IDiscountProps, 'amount' | 'discount_type'>> {
-    // Getting discount from discount table
-    const discount = await Discount.getDiscount(discountCode);
+    originalPrice: number;
+  }): Promise<number> {
+    // Getting discount from discount table,
+    // for production this should be replaced
+    // with a join call between the two tables(discounts & condition_shipping_discounts)
+    const result = await Discount.getDiscount({ discountCode, originalPrice });
 
-    if (!discount) return null;
+    // if the result from the discount model is not valid, then no need to proceed
+    if (!(result && result.discount && result['discountPrice'])) return 0;
+
+    //
+    const { discount, discountPrice } = result;
 
     // using discount_id, getting shipping discount conditions
     const shippingDiscount = await this.getByDiscountId(discount.id);
 
-    let calculatedDiscount: Pick<IDiscountProps, 'amount' | 'discount_type'> = {
-      discount_type: 'percent',
-      amount: 0,
-    };
-
-    // Checking if it matches, shipping discount's rules, and assign if it does
+    // Checking if it matches, conditional shipping discount's rules, and return the discounted price if it does
     if (
       shippingDiscount &&
       inRange(
@@ -53,10 +56,10 @@ export class ConditionalShippingDiscount
       ) &&
       inRange(shippingDiscount.min_weight, shippingDiscount.max_weight, weight)
     ) {
-      calculatedDiscount = discount;
+      return discountPrice;
     }
 
-    return calculatedDiscount;
+    return originalPrice;
   }
 
   /** */

@@ -18,7 +18,7 @@ export class ShippingCheckout implements IShippingCheckout {
   private _unitWeightCost: number;
   private _discountCode: string;
 
-  private _discountAmount = -1;
+  private _totalPrice = -1;
 
   constructor({
     baseCost = -1,
@@ -46,50 +46,23 @@ export class ShippingCheckout implements IShippingCheckout {
     );
   }
 
-  /** If discount is set, then we return it, else we calculate it, then set it then return it */
-  async getDiscount(): Promise<number> {
-    if (this._discountAmount < 0) {
-      this.setDiscount(await this.getCalculatedDiscount());
+  // Getting total discount price, if discount code matches
+  async fetchTotalPrice(): Promise<number> {
+    // if total price is not already set, then set it
+    if (this._totalPrice < 0) {
+      this._totalPrice = await ConditionalShippingDiscount.getDiscountedPrice({
+        distance: this._totalDistance,
+        weight: this._totalWeight,
+        discountCode: this._discountCode,
+        originalPrice: this.getLinePrice(),
+      });
     }
 
-    return this._discountAmount;
+    return this._totalPrice;
   }
 
-  /** */
-  async getCalculatedDiscount(): Promise<number> {
-    // getting discount if valid
-    const discount = await ConditionalShippingDiscount.getDiscount({
-      discountCode: this._discountCode,
-      weight: this._totalWeight,
-      distance: this._totalDistance,
-    });
-
-    if (!discount) return 0;
-
-    switch (discount.discount_type) {
-      case 'percent':
-        return ()
-        break;
-      case 'flat':
-        return discount.amount;
-        break;
-      default:
-        throw new Error('Discount type not supported');
-    }
-  }
-
-  /** */
-  setDiscount(val: number): void {
-    this._discountAmount = val;
-    return;
-  }
-
-  /** Total price is the line price minus discounted amount */
-  async getTotalPrice(): Promise<number> {
-    const totalPrice = this.getLinePrice() - (await this.getDiscount());
-
-    // On occasion of flat discount, if line price is lesser than discount,
-    // it can lead to negative price, so handling it her
-    return totalPrice > 0 ? totalPrice : 0;
+  //
+  async getDiscountedAmount(): Promise<number> {
+    return this.getLinePrice() - (await this.fetchTotalPrice());
   }
 }
