@@ -45,8 +45,11 @@ export class ConditionalShippingDiscount
       !row ||
       // Early returning original price if conditional not matches
       !(
-        inRange(row.min_distance, row.max_distance, distance) &&
-        inRange(row.min_weight, row.max_weight, weight)
+        inRange({
+          min: row.min_distance,
+          max: row.max_distance,
+          val: distance,
+        }) && inRange({ min: row.min_weight, max: row.max_weight, val: weight })
       )
     ) {
       return originalPrice;

@@ -1,9 +1,5 @@
-export default function isWholeNumber(val: unknown): boolean {
-  try {
-    return typeof val === 'number' && !Number.isNaN(val) && val > 0;
-  } catch (e) {
-    console.error(e);
-  }
+import isNumber from './isNumber.js';
 
-  return false;
+export default function isWholeNumber(val: unknown): boolean {
+  return isNumber(val) && val > 0;
 }
