@@ -1,6 +1,6 @@
 import { ConditionalShippingDiscount } from '../src/model/ConditionalShippingDiscount.js';
 
-describe('delivery cost function', () => {
+describe('Conditional discount function', () => {
   it('calculate discount: scenario 1', async () => {
     expect(
       await ConditionalShippingDiscount.getDiscountedPrice({
