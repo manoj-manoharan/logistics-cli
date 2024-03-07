@@ -41,13 +41,12 @@ export class Cart implements ICart {
   getLinePrice(): number {
     // Validation
     if (
-      [
+      ![
         this._baseCost,
         this._unitDistanceCost,
         this._unitWeightCost,
         this._totalDistance,
-        this._totalPrice,
-      ].some((v) => !isNumberAndEqOrGtThanZero(v))
+      ].every(isNumberAndEqOrGtThanZero)
     ) {
       throw new Error('Error deriving line price value');
     }
@@ -60,7 +59,7 @@ export class Cart implements ICart {
   }
 
   // Getting total discount price, if discount code matches
-  async fetchTotalPrice(): Promise<number> {
+  async getTotalPrice(): Promise<number> {
     // if total price is not already set, then set it
     if (!isNumberAndEqOrGtThanZero(this._totalPrice)) {
       this._totalPrice = await ConditionalShippingDiscount.getDiscountedPrice({
@@ -76,6 +75,6 @@ export class Cart implements ICart {
 
   //
   async getDiscountedAmount(): Promise<number> {
-    return this.getLinePrice() - (await this.fetchTotalPrice());
+    return this.getLinePrice() - (await this.getTotalPrice());
   }
 }

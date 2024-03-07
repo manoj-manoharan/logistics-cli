@@ -1,5 +1,5 @@
 export interface ICart {
   getLinePrice(): number;
-  fetchTotalPrice(): Promise<number>;
+  getTotalPrice(): Promise<number>;
   getDiscountedAmount(): Promise<number>;
 }

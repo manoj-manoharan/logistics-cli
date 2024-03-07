@@ -33,15 +33,20 @@ export class Discount implements IDiscountProps {
       throw new Error('Invalid Discount object');
     }
 
+    let discountedPrice = originalPrice;
+
     switch (discount.discount_type) {
       case 'percent':
-        return originalPrice - (originalPrice / 100) * discount.amount;
+        discountedPrice =
+          originalPrice - (originalPrice / 100) * discount.amount;
         break;
       case 'flat':
-        return originalPrice - discount.amount;
+        discountedPrice = originalPrice - discount.amount;
         break;
       default:
         throw new Error('Discount type not supported');
     }
+
+    return Math.max(discountedPrice, 0);
   }
 }

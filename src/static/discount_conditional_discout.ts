@@ -52,4 +52,16 @@ export const discounts_inner_join_condition_shipping_discount: {
     min_weight: 10,
     max_weight: 150,
   },
+  OFR200PERCENT: {
+    id: 'OFR200PERCENT',
+    discount_type: 'percent',
+    discount_code: 'OFR200PERCENT',
+    csd_id: 'SHIP_OFR200PERCENT',
+    discount_id: 'OFR200PERCENT',
+    min_distance: 1,
+    max_distance: 250,
+    min_weight: 1,
+    max_weight: 150,
+    amount: 200,
+  },
 };

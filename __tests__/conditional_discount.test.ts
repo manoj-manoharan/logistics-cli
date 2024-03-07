@@ -34,6 +34,17 @@ describe('Conditional discount function', () => {
     ).toBe(665);
   });
 
+  it('calculate discount: negative discount scenario', async () => {
+    expect(
+      await ConditionalShippingDiscount.getDiscountedPrice({
+        discountCode: 'OFR200PERCENT',
+        weight: 1,
+        distance: 1,
+        originalPrice: 100,
+      }),
+    ).toBe(0);
+  });
+
   it('OFR001 - within range', async () => {
     expect(
       await ConditionalShippingDiscount.getDiscountedPrice({

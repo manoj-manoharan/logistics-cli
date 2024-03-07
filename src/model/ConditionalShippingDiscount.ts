@@ -3,6 +3,8 @@ import {
   discounts_inner_join_condition_shipping_discount,
 } from '../static/discount_conditional_discout.js';
 import { inRange } from '../util/inRange.js';
+import isNumberAndEqOrGtThanZero from '../util/isNumberAndEqOrGtThanZero.js';
+import isString from '../util/isString.js';
 import { Discount } from './Discount.js';
 
 export interface IConditionalShippingDiscountProps {
@@ -25,10 +27,10 @@ export class ConditionalShippingDiscount
   max_weight: number;
 
   static async getDiscountedPrice({
-    distance = 0,
-    weight = 0,
+    distance = -1,
+    weight = -1,
     discountCode,
-    originalPrice = 0,
+    originalPrice = -1,
   }: {
     distance: number;
     weight: number;
@@ -36,14 +38,30 @@ export class ConditionalShippingDiscount
     originalPrice: number;
   }): Promise<number> {
     //
+    if (
+      !(
+        isString(discountCode) &&
+        [distance, weight, originalPrice].every(isNumberAndEqOrGtThanZero)
+      )
+    ) {
+      return originalPrice;
+    }
+
+    //
     const row =
       await ConditionalShippingDiscount.getJoinedByDiscountIdAndQueriesByDiscountCode(
         discountCode,
       );
 
+    // If min, max distance or weight is invalid, or if the values are not in range then early return
     if (
       !row ||
-      // Early returning original price if conditional not matches
+      ![
+        row.min_distance,
+        row.max_distance,
+        row.min_weight,
+        row.max_weight,
+      ].every(isNumberAndEqOrGtThanZero) ||
       !(
         inRange({
           min: row.min_distance,
