@@ -1,4 +1,5 @@
 import { ConditionalShippingDiscount } from '../../../model/ConditionalShippingDiscount.js';
+import isWholeNumber from '../../../util/isWholeNumber.js';
 import { ICart } from './ICart.js';
 
 interface ICartProps {
@@ -38,7 +39,19 @@ export class Cart implements ICart {
 
   /** Deriving the total cost */
   getLinePrice(): number {
-    // TODO : Validation required
+    // Validation
+    if (
+      [
+        this._baseCost,
+        this._unitDistanceCost,
+        this._unitWeightCost,
+        this._totalDistance,
+        this._totalPrice,
+      ].some((v) => !isWholeNumber(v))
+    ) {
+      throw new Error('Error deriving line price value');
+    }
+
     return (
       this._baseCost +
       this._unitDistanceCost * this._totalDistance +
@@ -49,7 +62,7 @@ export class Cart implements ICart {
   // Getting total discount price, if discount code matches
   async fetchTotalPrice(): Promise<number> {
     // if total price is not already set, then set it
-    if (this._totalPrice < 0) {
+    if (!isWholeNumber(this._totalPrice)) {
       this._totalPrice = await ConditionalShippingDiscount.getDiscountedPrice({
         distance: this._totalDistance,
         weight: this._totalWeight,
