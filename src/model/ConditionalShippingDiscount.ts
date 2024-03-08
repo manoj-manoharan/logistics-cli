@@ -84,6 +84,8 @@ export class ConditionalShippingDiscount
   static async getJoinedByDiscountIdAndQueriesByDiscountCode(
     discountCode: string,
   ): Promise<IDiscountsInnerJoinConditionShippingDiscount> {
+    // TODO: Add a cache layer, as same discount code will called numerous times,
+    // especially on sale days like Black friday
     return (
       discounts_inner_join_condition_shipping_discount[discountCode] || null
     );
