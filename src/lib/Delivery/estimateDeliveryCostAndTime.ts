@@ -48,7 +48,7 @@ export default async function estimateDeliveryCostAndTime(
       id: item.id,
       discount: await cart.getDiscountedAmount(),
       totalCost: await cart.getTotalPrice(),
-      estimatedTimeInHours: 0,
+      estimatedTimeInHours: -1,
     };
   }
 
