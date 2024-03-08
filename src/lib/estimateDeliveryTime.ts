@@ -14,6 +14,15 @@ export interface Package {
   discountCode: string;
 }
 
-export default async function estimateDeliveryTime(params: Shipment) {
+export interface EstimatedShippingCostAndTime {
+  id: string;
+  discount: number;
+  totalCost: number;
+  estimatedTimeInHours: number;
+}
+
+export default async function estimateDeliveryCostAndTime(
+  params: Shipment,
+): Promise<EstimatedShippingCostAndTime> {
   //TODO: Use AJV validator to validate params
 }

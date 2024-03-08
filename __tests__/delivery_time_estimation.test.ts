@@ -1,4 +1,4 @@
-import estimateDeliveryTime from '../src/lib/estimateDeliveryTime.js';
+import estimateDeliveryCostAndTime from '../src/lib/estimateDeliveryTime.js';
 
 describe('Delivery time estimation', () => {
   it('scenario 1', async () => {
@@ -33,6 +33,8 @@ describe('Delivery time estimation', () => {
     ];
 
     //
-    expect(await estimateDeliveryTime(input)).toStrictEqual(expectedOutput);
+    expect(await estimateDeliveryCostAndTime(input)).toStrictEqual(
+      expectedOutput,
+    );
   });
 });
