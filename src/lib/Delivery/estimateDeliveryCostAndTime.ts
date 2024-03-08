@@ -54,7 +54,10 @@ export default async function estimateDeliveryCostAndTime(
 
   // calculating estimated time delivery for each packages
   // based on the batch that has been assigned
-  estimateDeliveryTime(params.packages).map((v) => {
+  estimateDeliveryTime({
+    packages: params.packages,
+    noOfVehicles: params.noOfVehicles,
+  }).map((v) => {
     res[v.id].estimatedTimeInHours = v.estimatedTimeInHours;
   });
 
