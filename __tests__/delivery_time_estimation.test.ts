@@ -1,4 +1,4 @@
-import estimateDeliveryCostAndTime from '../src/lib/estimateDeliveryTime.js';
+import estimateDeliveryCostAndTime from '../src/lib/Delivery/estimateDeliveryCostAndTime.js';
 
 describe('Delivery time estimation', () => {
   it('scenario 1', async () => {
@@ -9,6 +9,8 @@ describe('Delivery time estimation', () => {
       noOfVehicles: 2,
       max_speed: 70,
       max_weight_limit: 200,
+      unitDistanceCost: 5,
+      unitWeightCost: 10,
       packages: [
         { id: 'PKG1', weight: 50, distance: 30, discountCode: 'OFR001' },
         { id: 'PKG2', weight: 75, distance: 125, discountCode: 'OFFR0008' },
