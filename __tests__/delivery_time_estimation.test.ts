@@ -1,4 +1,4 @@
-import estimateDeliveryCostAndTime from '../src/lib/Delivery/estimateDeliveryCostAndTime.js';
+import estimateDeliveryCostAndTime from '../src/rough/estimateDeliveryCostAndTime.js';
 
 describe('Delivery time estimation', () => {
   it('scenario 1', async () => {

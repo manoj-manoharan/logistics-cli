@@ -1,4 +1,4 @@
-import { Cart } from '../Transaction/index.js';
+import { Cart } from '../lib/Transaction/index.js';
 import estimateDeliveryTime from './estimateDeliveryTime.js';
 
 export interface Shipment {

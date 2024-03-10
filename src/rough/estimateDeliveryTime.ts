@@ -1,4 +1,4 @@
-import isNumberAndEqOrGtThanZero from '../../util/isNumberAndEqOrGtThanZero.js';
+import isNumberAndEqOrGtThanZero from '../util/isNumberAndEqOrGtThanZero.js';
 import {
   EstimatedShippingCostAndTime,
   Package,
