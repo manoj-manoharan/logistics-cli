@@ -21,12 +21,17 @@ export class Dispatcher implements IDispatcher {
     return this.fleet;
   }
 
-  async getDispatchItems(): Promise<Array<IDispatchItem>> {
-    // TODO : calculate the estimated delivery time for all the items in dispatch list
+  async getDispatchItems(
+    withTimeEstimation = false,
+  ): Promise<Array<IDispatchItem>> {
+    //
+    // TODO:Only when true, calculate the estimated delivery time for all the items in dispatch list
     // and update it to items in the list
+    if (withTimeEstimation) {
+      throw new Error('Not implemented');
+    }
 
     // TODO: Return the updated dispatch list items
-
     throw new Error('Not implemented');
   }
 
@@ -38,5 +43,6 @@ export class Dispatcher implements IDispatcher {
     }
 
     // TODO : Calculate discountPrice, linePrice & totalPrice and add the container item to dispatch list
+    throw new Error('Not implemented');
   }
 }

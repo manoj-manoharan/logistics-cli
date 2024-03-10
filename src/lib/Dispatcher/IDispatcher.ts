@@ -18,7 +18,7 @@ export interface IDispatcher {
   setFleet(v: IFleet): void;
   getFleet(): IFleet;
 
-  getDispatchItems(): Promise<Array<IDispatchItem>>;
+  getDispatchItems(withTimeEstimation: boolean): Promise<Array<IDispatchItem>>;
 
   addToDispatch(
     v: Pick<IDispatchItem, 'discountCode' | 'container'>,
