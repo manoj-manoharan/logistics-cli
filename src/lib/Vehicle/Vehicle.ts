@@ -5,7 +5,10 @@ export class Vehicle implements IVehicle {
   maxSpeed: number;
   maxWeightCapacity: number;
 
-  constructor({ maxSpeed, maxWeightCapacity }: IVehicle) {
+  constructor({
+    maxSpeed,
+    maxWeightCapacity,
+  }: Pick<IVehicle, 'maxSpeed' | 'maxWeightCapacity'>) {
     this.setMaxSpeed(maxSpeed);
     this.setMaxWeightCapacity(maxWeightCapacity);
   }

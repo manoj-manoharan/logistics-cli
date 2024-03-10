@@ -1,23 +1,27 @@
 import { IContainer } from '../Container/IContainer.js';
-import { IVehicle } from './IVehicle.js';
+import { IVehicleProps } from '../Vehicle/IVehicle.js';
 
 export interface IFleet {
   baseDeliveryCost: number;
   unitDistanceDeliveryCost: number;
   unitWeightDeliveryCost: number;
   noOfVehicle: number;
-  vehicles: Array<IVehicle>;
+  vehicles: Array<IVehicleProps>;
   setNoOfVehicle(v: number): void;
   getNoOfVehicle(): number;
-  setVehicles(v: Array<IVehicle>): void;
-  addVehicle(v: IVehicle): void;
-  getVehicles(): Array<IVehicle>;
+  setVehicles(v: Array<IVehicleProps>): void;
+  addVehicle(v: IVehicleProps): void;
+  getVehicles(): Array<IVehicleProps>;
+
+  getDeliveryCost(container: IContainer): number;
 
   groupByDeliverableBatches(
     containers: Array<IContainer>,
-  ): Array<Array<IContainer>>;
+  ): Promise<Map<number, Array<IContainer>>>;
 
-  getEstimatedDeliveryTimeInHours(batches: Array<Array<IContainer>>): {
+  getEstimatedDeliveryTimeInHours(
+    containerBatchMap: Map<number, Array<IContainer>>,
+  ): {
     [key: IContainer['containerId']]: number;
   };
 }

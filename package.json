@@ -31,7 +31,9 @@
     "lint": "eslint . --ext .ts --ext .mts",
     "test": "jest --coverage",
     "prettier": "prettier --config .prettierrc --write .",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "costEstimation": "node build/src/lib/IO/Cli/ShipmentUI/CostEstimation.js",
+    "deliveryTimeEstimation": "node build/src/lib/IO/Cli/ShipmentUI/DeliveryTimeEstimation.js"
   },
   "author": "Manoj",
   "license": "Apache-2.0",

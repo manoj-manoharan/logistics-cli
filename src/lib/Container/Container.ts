@@ -8,7 +8,11 @@ export class Container implements IContainer {
   dimension: { weight: number };
   route: { distance: number };
 
-  constructor({ containerId, dimension, route }: IContainer) {
+  constructor({
+    containerId,
+    dimension,
+    route,
+  }: Pick<IContainer, 'containerId' | 'dimension' | 'route'>) {
     this.setContainerId(containerId);
     this.setDimension(dimension);
     this.setRoute(route);
