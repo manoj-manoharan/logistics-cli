@@ -108,7 +108,7 @@ export class Batcher implements IBatcher {
     return result.packages;
   }
 
-  getIdBatchedMap({
+  private getIdBatchedMap({
     containers,
     maxCapacity,
   }: {

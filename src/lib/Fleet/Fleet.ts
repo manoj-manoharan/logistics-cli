@@ -105,9 +105,9 @@ export class Fleet implements IFleet {
       throw new Error('Containers are not a valid list');
     }
 
-    if (!containers.length) return [];
+    if (!containers.length) return new Map();
 
-    if (!this.vehicles.length) return [];
+    if (!this.vehicles.length) return new Map();
 
     // using first vehicle's capacity as max, because all vehicles are same type in current case
     const maxCapacity = this.vehicles[0].maxWeightCapacity;
@@ -115,17 +115,19 @@ export class Fleet implements IFleet {
     return new Batcher().getBatchContainersMap({ maxCapacity, containers });
   }
 
-  getEstimatedDeliveryTimeInHours(batches: Array<Array<IContainer>>): {
+  getEstimatedDeliveryTimeInHours(
+    containerBatchMap: Map<number, Array<IContainer>>,
+  ): {
     [key: IContainer['containerId']]: number;
   } {
     // validation
-    if (!isArray(batches)) {
+    if (!isArray(containerBatchMap)) {
       throw new Error('Batches are not a valid list');
     }
 
-    if (!batches.length) return {};
+    if (!containerBatchMap.size) return {};
 
-    if (!isArray(batches[0])) {
+    if (!isArray(containerBatchMap[0])) {
       throw new Error('Values inside batch array are not a valid list');
     }
 

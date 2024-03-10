@@ -19,7 +19,9 @@ export interface IFleet {
     containers: Array<IContainer>,
   ): Promise<Map<number, Array<IContainer>>>;
 
-  getEstimatedDeliveryTimeInHours(batches: Array<Array<IContainer>>): {
+  getEstimatedDeliveryTimeInHours(
+    containerBatchMap: Map<number, Array<IContainer>>,
+  ): {
     [key: IContainer['containerId']]: number;
   };
 }
