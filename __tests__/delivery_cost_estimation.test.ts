@@ -114,7 +114,7 @@ describe('Delivery cost estimation', () => {
     expect(
       await dispatcher
         .addToDispatch(input)
-        .then(() => dispatcher.getPreparedItemsForDispatching()),
+        .then(() => dispatcher.getPreparedItemsForDispatching({})),
     ).toStrictEqual(expectedOutput);
   });
 
@@ -271,7 +271,7 @@ describe('Delivery cost estimation', () => {
     expect(
       await dispatcher
         .addToDispatch(input)
-        .then(() => dispatcher.getPreparedItemsForDispatching()),
+        .then(() => dispatcher.getPreparedItemsForDispatching({})),
     ).toStrictEqual(expectedOutput);
   });
 });
