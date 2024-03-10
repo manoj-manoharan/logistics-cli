@@ -138,7 +138,7 @@ export class Fleet implements IFleet {
 
     // Function to calculate time taken in minutes to reach the place to deliver
     const calculateTimeTaken = (kilometer = 1): number =>
-      Math.ceil((kilometer / maxSpeed) * 60);
+      Math.floor((kilometer / maxSpeed) * 60);
 
     // Initializing a min heap
     const minHeap = new MinHeap<{ minutesTakenTillNow: number }>();
@@ -176,7 +176,7 @@ export class Fleet implements IFleet {
         maxTimePackage = Math.max(maxTimePackage, packageEstimatedDeliveryTime);
       }
 
-      minHeap.push(new HeapItem({ minutesTakenTillNow: maxTimePackage }));
+      minHeap.push(new HeapItem({ minutesTakenTillNow: maxTimePackage * 2 }));
     }
 
     return packageDeliveryEstimatedHour;
