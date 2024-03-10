@@ -1,20 +1,20 @@
 import { optimalSubsetWithMaxOccupancy } from '../src/util/optimalSubsetWithMaxOccupancy.js';
 
 describe('Find the subset with optimal capacity occupancy (with max no of items as priority and weight & distance as tie breakers)', () => {
-  it('For arr = [[1,1], [2,1], [3,1], [4,1]], max = 3 output should be [[1,1], [2,1]]', () => {
+  it('Scenario 1', () => {
     expect(
       optimalSubsetWithMaxOccupancy({
         arr: [
-          [1, 1],
-          [2, 1],
-          [3, 1],
-          [4, 1],
+          [1, 1, 'id'],
+          [2, 1, 'id'],
+          [3, 1, 'id'],
+          [4, 1, 'id'],
         ],
         maxCapacity: 3,
       }),
     ).toStrictEqual([
-      [1, 1],
-      [2, 1],
+      [1, 1, 'id'],
+      [2, 1, 'id'],
     ]);
   });
 
@@ -22,21 +22,21 @@ describe('Find the subset with optimal capacity occupancy (with max no of items 
     expect(
       optimalSubsetWithMaxOccupancy({
         arr: [
-          [1, 1],
-          [1, 1],
-          [1, 1],
-          [1, 1],
-          [1, 1],
-          [2, 1],
-          [3, 1],
-          [4, 1],
+          [1, 1, 'id'],
+          [1, 1, 'id'],
+          [1, 1, 'id'],
+          [1, 1, 'id'],
+          [1, 1, 'id'],
+          [2, 1, 'id'],
+          [3, 1, 'id'],
+          [4, 1, 'id'],
         ],
         maxCapacity: 3,
       }),
     ).toStrictEqual([
-      [1, 1],
-      [1, 1],
-      [1, 1],
+      [1, 1, 'id'],
+      [1, 1, 'id'],
+      [1, 1, 'id'],
     ]);
   });
 
@@ -44,19 +44,19 @@ describe('Find the subset with optimal capacity occupancy (with max no of items 
     expect(
       optimalSubsetWithMaxOccupancy({
         arr: [
-          [1, 2],
-          [1, 2],
-          [1, 2],
-          [1, 3],
-          [1, 3],
-          [1, 3],
+          [1, 2, 'id'],
+          [1, 2, 'id'],
+          [1, 2, 'id'],
+          [1, 3, 'id'],
+          [1, 3, 'id'],
+          [1, 3, 'id'],
         ],
         maxCapacity: 3,
       }),
     ).toStrictEqual([
-      [1, 2],
-      [1, 2],
-      [1, 2],
+      [1, 2, 'id'],
+      [1, 2, 'id'],
+      [1, 2, 'id'],
     ]);
   });
 
@@ -64,19 +64,19 @@ describe('Find the subset with optimal capacity occupancy (with max no of items 
     expect(
       optimalSubsetWithMaxOccupancy({
         arr: [
-          [1, 2],
-          [1, 2],
-          [1, 2],
-          [2, 1],
-          [2, 1],
-          [2, 1],
+          [1, 2, 'id'],
+          [1, 2, 'id'],
+          [1, 2, 'id'],
+          [2, 1, 'id'],
+          [2, 1, 'id'],
+          [2, 1, 'id'],
         ],
         maxCapacity: 3,
       }),
     ).toStrictEqual([
-      [1, 2],
-      [1, 2],
-      [1, 2],
+      [1, 2, 'id'],
+      [1, 2, 'id'],
+      [1, 2, 'id'],
     ]);
   });
 });
