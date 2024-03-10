@@ -62,7 +62,7 @@ function optimalSubsetWithMaxOccupancy({
 
     // If capacity exceed, should not process curr item
     let withCurr = stack;
-    if (maxCapacity - currWeight >= 0) {
+    if (remainingCapacity - currWeight >= 0) {
       // Getting max, with current item
       withCurr = recursion(remainingCapacity - currWeight, index + 1, {
         totalWeight: stack.totalWeight + currWeight,
@@ -100,9 +100,7 @@ function optimalSubsetWithMaxOccupancy({
   //
   arr.sort((a, b) => (a[0] !== b[0] ? a[0] - b[0] : b[1] - a[1]));
 
-  const result = recursion();
-
-  console.debug({ result });
+  const result = recursion(maxCapacity);
 
   return result.packages;
 }
