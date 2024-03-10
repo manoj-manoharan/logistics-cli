@@ -12,7 +12,6 @@ describe('Heap', () => {
     const result = [];
 
     while (heap.size()) {
-      console.debug(heap.peek());
       result.push(heap.pop().item);
     }
 
