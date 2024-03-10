@@ -12,8 +12,12 @@ export interface IFleet {
   setVehicles(v: Array<IVehicle>): void;
   addVehicle(v: IVehicle): void;
   getVehicles(): Array<IVehicle>;
-  getEstimatedDeliveryTimeInHours(containers: Array<IContainer>): Array<{
-    containerId: IContainer['containerId'];
-    deliveryTimeInHours: number;
-  }>;
+
+  groupByDeliverableBatches(
+    containers: Array<IContainer>,
+  ): Array<Array<IContainer>>;
+
+  getEstimatedDeliveryTimeInHours(batches: Array<Array<IContainer>>): {
+    [key: IContainer['containerId']]: number;
+  };
 }

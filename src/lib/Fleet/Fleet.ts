@@ -90,17 +90,33 @@ export class Fleet implements IFleet {
     return this.vehicles;
   }
 
-  getEstimatedDeliveryTimeInHours(containers: Array<IContainer>): Array<{
-    containerId: IContainer['containerId'];
-    deliveryTimeInHours: number;
-  }> {
+  groupByDeliverableBatches(
+    containers: Array<IContainer>,
+  ): Array<Array<IContainer>> {
     // validation
-    if (!isArray(containers)) return [];
+    if (!isArray(containers)) {
+      throw new Error('Containers are not a valid list');
+    }
 
-    // Batch containers
-    const batches: Array<Array<IContainer>> =
-      this.groupByDeliverableBatches(containers);
+    if (!containers.length) return [];
 
-    return this.estimateDeliveryTimes(batches);
+    throw new Error('Not implemented.');
+  }
+
+  getEstimatedDeliveryTimeInHours(batches: Array<Array<IContainer>>): {
+    [key: IContainer['containerId']]: number;
+  } {
+    // validation
+    if (!isArray(batches)) {
+      throw new Error('Batches are not a valid list');
+    }
+
+    if (!batches.length) return {};
+
+    if (!isArray(batches[0])) {
+      throw new Error('Values inside batch array are not a valid list');
+    }
+
+    throw new Error('Not implemented');
   }
 }
