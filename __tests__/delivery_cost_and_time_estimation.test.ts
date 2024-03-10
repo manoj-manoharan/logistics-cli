@@ -81,7 +81,7 @@ describe('Delivery cost and time estimation', () => {
         linePrice: 175,
         totalPrice: 175,
         discountPrice: 0,
-        estimatedDeliveryTimeInHours: -1,
+        estimatedDeliveryTimeInHours: 0.07,
       },
       {
         container: new Container({
@@ -97,7 +97,7 @@ describe('Delivery cost and time estimation', () => {
         linePrice: 275,
         totalPrice: 275,
         discountPrice: 0,
-        estimatedDeliveryTimeInHours: -1,
+        estimatedDeliveryTimeInHours: 0.07,
       },
       {
         container: new Container({
@@ -113,7 +113,7 @@ describe('Delivery cost and time estimation', () => {
         linePrice: 700,
         totalPrice: 665,
         discountPrice: 35,
-        estimatedDeliveryTimeInHours: -1,
+        estimatedDeliveryTimeInHours: 1.42,
       },
     ];
 
@@ -121,9 +121,11 @@ describe('Delivery cost and time estimation', () => {
     const dispatcher = new Dispatcher({ fleet });
     // Adding to dispatch batch
     expect(
-      await dispatcher
-        .addToDispatch(input)
-        .then(() => dispatcher.getPreparedItemsForDispatching({})),
+      await dispatcher.addToDispatch(input).then(() =>
+        dispatcher.getPreparedItemsForDispatching({
+          withTimeEstimation: true,
+        }),
+      ),
     ).toStrictEqual(expectedOutput);
   });
 
