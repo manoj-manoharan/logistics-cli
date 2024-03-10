@@ -6,8 +6,8 @@ import { IDispatchItem, IDispatcher } from './IDispatcher.js';
 
 export class Dispatcher implements IDispatcher {
   fleet: IFleet;
-  containers: Array<IContainer>;
-  dispatchItems: Array<IDispatchItem>;
+  containers: Array<IContainer> = [];
+  dispatchItems: Array<IDispatchItem> = [];
 
   constructor({ fleet }: Pick<IDispatcher, 'fleet'>) {
     this.setFleet(fleet);
@@ -21,7 +21,7 @@ export class Dispatcher implements IDispatcher {
     return this.fleet;
   }
 
-  async getDispatchItems(
+  async getPreparedItemsForDispatching(
     withTimeEstimation = false,
   ): Promise<Array<IDispatchItem>> {
     // Only when true, calculate the estimated delivery time for all the items in dispatch list
