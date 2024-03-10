@@ -176,7 +176,12 @@ export class Fleet implements IFleet {
         maxTimePackage = Math.max(maxTimePackage, packageEstimatedDeliveryTime);
       }
 
-      minHeap.push(new HeapItem({ minutesTakenTillNow: maxTimePackage * 2 }));
+      minHeap.push(
+        new HeapItem(
+          { minutesTakenTillNow: maxTimePackage * 2 },
+          maxTimePackage * 2,
+        ),
+      );
     }
 
     return packageDeliveryEstimatedHour;
