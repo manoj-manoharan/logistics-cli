@@ -114,9 +114,9 @@ export class Batcher implements IBatcher {
   }: {
     containers: Array<IContainer>;
     maxCapacity: number;
-  }): Map<number, Array<string>> {
+  }): Map<number, Set<string>> {
     // Grouping by batch
-    const batches: Map<number, Array<string>> = new Map();
+    const batches: Map<number, Set<string>> = new Map();
 
     // Maintaining batch count
     let batchCount = 0;
@@ -137,17 +137,17 @@ export class Batcher implements IBatcher {
         arr: boxes,
       });
 
-      batches.set(batchCount, []);
+      batches.set(batchCount, new Set([]));
 
       // Mark the boxes which are batched, with the batch number
       for (const item of batch) {
         // Pushing the id into the appropriate batch
-        batches.get(batchCount).push(item[2]);
+        batches.get(batchCount).add(item[2]);
       }
 
       // Only filter the boxes which are not yet batched,
       // do not use simple not(!) condition, as 0 indexes are there
-      boxes = boxes.filter((b) => batches[b[2]] === undefined);
+      boxes = boxes.filter((b) => !batches.get(batchCount).has(b[2]));
 
       // Increment the batch number for next process
       ++batchCount;
@@ -174,10 +174,11 @@ export class Batcher implements IBatcher {
 
     for (const [key, idArr] of idBatchedMap.entries()) {
       // fetching container object, and setting in for the batch
-      finalBatchMap.set(
-        key,
-        idArr.map((id) => tempObj[id]),
-      );
+      finalBatchMap.set(key, []);
+
+      idArr.forEach((id) => {
+        finalBatchMap.get(key).push(tempObj[id]);
+      });
     }
 
     return finalBatchMap;

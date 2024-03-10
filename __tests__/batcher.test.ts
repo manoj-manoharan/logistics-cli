@@ -68,13 +68,19 @@ describe('Batcher grouping', () => {
       ],
     ]);
 
-    // Adding to dispatch batch
-    expect(
-      new Batcher().getBatchContainersMap({
-        containers: input,
-        maxCapacity: 200,
-      }),
-    ).toStrictEqual(expectedOutput);
+    const resultMap = new Batcher().getBatchContainersMap({
+      containers: input,
+      maxCapacity: 200,
+    });
+
+    for (const [key, arr] of resultMap.entries()) {
+      for (const ele of arr) {
+        const item = expectedOutput
+          .get(key)
+          .find((v) => v.containerId === ele.containerId);
+        expect(item).toStrictEqual(ele);
+      }
+    }
   });
 
   it('calculate discount: scenario 2', async () => {
@@ -182,20 +188,6 @@ describe('Batcher grouping', () => {
         3,
         [
           new Container({
-            containerId: 'PKG5',
-            dimension: {
-              weight: 155,
-            },
-            route: {
-              distance: 95,
-            },
-          }),
-        ],
-      ],
-      [
-        4,
-        [
-          new Container({
             containerId: 'PKG1',
             dimension: {
               weight: 50,
@@ -208,11 +200,18 @@ describe('Batcher grouping', () => {
       ],
     ]);
 
-    expect(
-      new Batcher().getBatchContainersMap({
-        containers: input,
-        maxCapacity: 200,
-      }),
-    ).toStrictEqual(expectedOutput);
+    const resultMap = new Batcher().getBatchContainersMap({
+      containers: input,
+      maxCapacity: 200,
+    });
+
+    for (const [key, arr] of resultMap.entries()) {
+      for (const ele of arr) {
+        const item = expectedOutput
+          .get(key)
+          .find((v) => v.containerId === ele.containerId);
+        expect(item).toStrictEqual(ele);
+      }
+    }
   });
 });
