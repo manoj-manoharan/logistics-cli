@@ -2,7 +2,6 @@ import isArray from '../../util/isArray.js';
 import isNumberAndEqOrGtThanZero from '../../util/isNumberAndEqOrGtThanZero.js';
 import { IContainer } from '../Container/IContainer.js';
 import { IFleet } from './IFleet.js';
-import { IVehicle } from '../Vehicle/IVehicle.js';
 import { Vehicle } from '../Vehicle/Vehicle.js';
 
 export class Fleet implements IFleet {
@@ -10,7 +9,7 @@ export class Fleet implements IFleet {
   unitDistanceDeliveryCost: number;
   unitWeightDeliveryCost: number;
   noOfVehicle: number = 0;
-  vehicles: IVehicle[] = [];
+  vehicles: IFleet['vehicles'] = [];
 
   constructor({
     baseDeliveryCost,
@@ -78,7 +77,7 @@ export class Fleet implements IFleet {
     return this.noOfVehicle;
   }
 
-  setVehicles(v: IVehicle[]): void {
+  setVehicles(v: IFleet['vehicles']): void {
     if (!isArray(v)) {
       throw new Error('Vehicles list is not valid.');
     }
@@ -88,12 +87,12 @@ export class Fleet implements IFleet {
     }
   }
 
-  addVehicle(v: IVehicle): void {
+  addVehicle(v: IFleet['vehicles'][number]): void {
     this.vehicles.push(new Vehicle(v));
     this.setNoOfVehicle(this.vehicles.length);
   }
 
-  getVehicles(): IVehicle[] {
+  getVehicles(): IFleet['vehicles'] {
     return this.vehicles;
   }
 

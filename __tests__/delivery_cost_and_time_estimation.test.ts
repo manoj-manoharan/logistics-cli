@@ -4,7 +4,7 @@ import { IDispatchItem } from '../src/lib/Dispatcher/IDispatcher.js';
 import { Fleet } from '../src/lib/Fleet/Fleet.js';
 import { IFleet } from '../src/lib/Fleet/IFleet.js';
 
-describe('Delivery cost estimation', () => {
+describe('Delivery cost and time estimation', () => {
   let fleet: IFleet;
 
   beforeAll(() => {
@@ -13,7 +13,16 @@ describe('Delivery cost estimation', () => {
       baseDeliveryCost: 100,
       unitDistanceDeliveryCost: 5,
       unitWeightDeliveryCost: 10,
-      vehicles: [],
+      vehicles: [
+        {
+          maxSpeed: 70,
+          maxWeightCapacity: 200,
+        },
+        {
+          maxSpeed: 70,
+          maxWeightCapacity: 200,
+        },
+      ],
     });
   });
 
@@ -197,7 +206,7 @@ describe('Delivery cost estimation', () => {
         linePrice: 750,
         totalPrice: 750,
         discountPrice: 0,
-        estimatedDeliveryTimeInHours: -1,
+        estimatedDeliveryTimeInHours: 3.98,
       },
       {
         container: new Container({
@@ -213,7 +222,7 @@ describe('Delivery cost estimation', () => {
         linePrice: 1475,
         totalPrice: 1475,
         discountPrice: 0,
-        estimatedDeliveryTimeInHours: -1,
+        estimatedDeliveryTimeInHours: 1.78,
       },
       {
         container: new Container({
@@ -229,7 +238,7 @@ describe('Delivery cost estimation', () => {
         linePrice: 2350,
         totalPrice: 2350,
         discountPrice: 0,
-        estimatedDeliveryTimeInHours: -1,
+        estimatedDeliveryTimeInHours: 1.42,
       },
       {
         container: new Container({
@@ -245,7 +254,7 @@ describe('Delivery cost estimation', () => {
         linePrice: 1500,
         totalPrice: 1395,
         discountPrice: 105,
-        estimatedDeliveryTimeInHours: -1,
+        estimatedDeliveryTimeInHours: 0.85,
       },
       {
         container: new Container({
@@ -261,7 +270,7 @@ describe('Delivery cost estimation', () => {
         linePrice: 2125,
         totalPrice: 2125,
         discountPrice: 0,
-        estimatedDeliveryTimeInHours: -1,
+        estimatedDeliveryTimeInHours: 4.19,
       },
     ];
 
