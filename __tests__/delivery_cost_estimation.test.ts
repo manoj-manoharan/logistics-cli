@@ -11,8 +11,8 @@ describe('Conditional discount function', () => {
     // Defining fleet
     fleet = new Fleet({
       baseDeliveryCost: 100,
-      unitDistanceDeliveryCost: 10,
-      unitWeightDeliveryCost: 5,
+      unitDistanceDeliveryCost: 5,
+      unitWeightDeliveryCost: 10,
       vehicles: [],
     });
   });

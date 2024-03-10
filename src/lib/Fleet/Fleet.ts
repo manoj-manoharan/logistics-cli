@@ -59,11 +59,11 @@ export class Fleet implements IFleet {
       throw new Error('unitWeightDeliveryCost is not valid');
     }
 
-    this.noOfVehicle = v;
+    this.unitWeightDeliveryCost = v;
   }
 
   getUnitWeightDeliveryCost(): number {
-    return this.noOfVehicle;
+    return this.unitWeightDeliveryCost;
   }
 
   setNoOfVehicle(v: number): void {
@@ -130,8 +130,8 @@ export class Fleet implements IFleet {
   getDeliveryCost(c: IContainer): number {
     return (
       this.baseDeliveryCost +
-      (c.dimension.weight * this.unitWeightDeliveryCost +
-        c.route.distance * this.unitDistanceDeliveryCost)
+      c.dimension.weight * this.unitWeightDeliveryCost +
+      c.route.distance * this.unitDistanceDeliveryCost
     );
   }
 }
