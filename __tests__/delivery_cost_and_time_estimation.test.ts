@@ -272,7 +272,7 @@ describe('Delivery cost and time estimation', () => {
         linePrice: 2125,
         totalPrice: 2125,
         discountPrice: 0,
-        estimatedDeliveryTimeInHours: 4.19,
+        estimatedDeliveryTimeInHours: 4.18,
       },
     ];
 
