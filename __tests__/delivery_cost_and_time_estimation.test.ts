@@ -280,7 +280,7 @@ describe('Delivery cost and time estimation', () => {
     expect(
       await dispatcher
         .addToDispatch(input)
-        .then(() => dispatcher.getPreparedItemsForDispatching()),
+        .then(() => dispatcher.getPreparedItemsForDispatching(true)),
     ).toStrictEqual(expectedOutput);
   });
 });

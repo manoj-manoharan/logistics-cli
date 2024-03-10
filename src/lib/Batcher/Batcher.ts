@@ -12,15 +12,15 @@ export class Batcher implements IBatcher {
     return (
       containers
         // Only allow boxes which have weight lesser than max capacity
-        .filter((v) => v.dimension.weight <= maxCapacity)
+        .filter((v) => v.getWeight() <= maxCapacity)
         // Sort for better handling
         .sort((a, b) => {
-          return a.dimension.weight !== b.dimension.weight
-            ? a.dimension.weight - b.dimension.weight
-            : b.route.distance - a.route.distance;
+          return a.getWeight() !== b.getWeight()
+            ? a.getWeight() - b.getWeight()
+            : b.getDistance() - a.getDistance();
         })
         // Format for the library function
-        .map((v) => [v.dimension.weight, v.route.distance, v.containerId])
+        .map((v) => [v.getWeight(), v.getDistance(), v.containerId])
     );
   }
 

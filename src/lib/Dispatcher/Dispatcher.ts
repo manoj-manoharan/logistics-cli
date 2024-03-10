@@ -69,8 +69,8 @@ export class Dispatcher implements IDispatcher {
       const totalPrice = await ConditionalShippingDiscount.getDiscountedPrice({
         discountCode,
         originalPrice: linePrice,
-        weight: container.dimension.weight,
-        distance: container.route.distance,
+        weight: container.getWeight(),
+        distance: container.getDistance(),
       });
 
       return {

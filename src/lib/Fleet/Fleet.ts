@@ -4,6 +4,8 @@ import { IContainer } from '../Container/IContainer.js';
 import { IFleet } from './IFleet.js';
 import { Vehicle } from '../Vehicle/Vehicle.js';
 import { Batcher } from '../Batcher/Batcher.js';
+import { MinHeap } from '../Heap/MinHeap.js';
+import { HeapItem } from '../Heap/HeapItem.js';
 
 export class Fleet implements IFleet {
   baseDeliveryCost: number;
@@ -121,24 +123,70 @@ export class Fleet implements IFleet {
     [key: IContainer['containerId']]: number;
   } {
     // validation
-    if (!isArray(containerBatchMap)) {
-      throw new Error('Batches are not a valid list');
-    }
-
     if (!containerBatchMap.size) return {};
 
-    if (!isArray(containerBatchMap[0])) {
+    // No vehicles available, so no parcels can be delivered
+    if (!this.vehicles.length) return {};
+
+    // Checking if the first batch is valid array
+    if (!isArray(containerBatchMap.get(0))) {
       throw new Error('Values inside batch array are not a valid list');
     }
 
-    throw new Error('Not implemented');
+    // using first vehicle's speed as max, because all vehicles are same type in current case
+    const maxSpeed = this.vehicles[0].maxSpeed || 1;
+
+    // Function to calculate time taken in minutes to reach the place to deliver
+    const calculateTimeTaken = (kilometer = 1): number =>
+      Math.ceil((kilometer / maxSpeed) * 60);
+
+    // Initializing a min heap
+    const minHeap = new MinHeap<{ minutesTakenTillNow: number }>();
+
+    // Total number of vehicles that will be available to consume
+    for (let i = 0; i < this.vehicles.length; ++i) {
+      minHeap.push(new HeapItem({ minutesTakenTillNow: 0 }, 0));
+    }
+
+    // Object to store the results
+    const packageDeliveryEstimatedHour = {};
+
+    // looping through the batches and estimating dispatch time for all the packages in vehicles
+    for (const batch of containerBatchMap.values()) {
+      // popping the earliest available vehicle
+      const {
+        item: { minutesTakenTillNow: estimatedDeliveryStartTime },
+      } = minHeap.pop();
+
+      // storing the longest distance for current batch
+      let maxTimePackage = 0;
+
+      for (const container of batch) {
+        // time taken for the current package to be delivered
+        const packageEstimatedDeliveryTime =
+          calculateTimeTaken(container.getDistance()) +
+          estimatedDeliveryStartTime;
+
+        // saving the time that the package will be delivered
+        packageDeliveryEstimatedHour[container.containerId] = parseFloat(
+          (packageEstimatedDeliveryTime / 60).toFixed(2),
+        );
+
+        // calculating the longest distance
+        maxTimePackage = Math.max(maxTimePackage, packageEstimatedDeliveryTime);
+      }
+
+      minHeap.push(new HeapItem({ minutesTakenTillNow: maxTimePackage }));
+    }
+
+    return packageDeliveryEstimatedHour;
   }
 
   getDeliveryCost(c: IContainer): number {
     return (
       this.baseDeliveryCost +
-      c.dimension.weight * this.unitWeightDeliveryCost +
-      c.route.distance * this.unitDistanceDeliveryCost
+      c.getWeight() * this.unitWeightDeliveryCost +
+      c.getDistance() * this.unitDistanceDeliveryCost
     );
   }
 }
