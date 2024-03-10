@@ -97,9 +97,6 @@ function optimalSubsetWithMaxOccupancy({
     return memo[key];
   };
 
-  //
-  arr.sort((a, b) => (a[0] !== b[0] ? a[0] - b[0] : b[1] - a[1]));
-
   const result = recursion(maxCapacity);
 
   return result.packages;
