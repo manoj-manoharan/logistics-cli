@@ -16,8 +16,14 @@ export class Fleet implements IFleet {
     baseDeliveryCost,
     unitDistanceDeliveryCost,
     unitWeightDeliveryCost,
-    vehicles,
-  }: IFleet) {
+    vehicles = [],
+  }: Pick<
+    IFleet,
+    | 'baseDeliveryCost'
+    | 'unitDistanceDeliveryCost'
+    | 'unitWeightDeliveryCost'
+    | 'vehicles'
+  >) {
     this.setBaseDeliveryCost(baseDeliveryCost);
     this.setUnitDistanceDeliveryCost(unitDistanceDeliveryCost);
     this.setUnitWeightDeliveryCost(unitWeightDeliveryCost);
