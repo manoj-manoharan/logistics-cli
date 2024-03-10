@@ -97,9 +97,9 @@ export class Fleet implements IFleet {
     return this.vehicles;
   }
 
-  groupByDeliverableBatches(
+  async groupByDeliverableBatches(
     containers: Array<IContainer>,
-  ): Array<Array<IContainer>> {
+  ): Promise<Array<Array<IContainer>>> {
     // validation
     if (!isArray(containers)) {
       throw new Error('Containers are not a valid list');

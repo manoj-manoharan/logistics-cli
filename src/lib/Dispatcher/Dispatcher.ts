@@ -24,10 +24,25 @@ export class Dispatcher implements IDispatcher {
   async getDispatchItems(
     withTimeEstimation = false,
   ): Promise<Array<IDispatchItem>> {
-    // TODO: Only when true, calculate the estimated delivery time for all the items in dispatch list
+    // Only when true, calculate the estimated delivery time for all the items in dispatch list
     // and update it to items in the list
     if (withTimeEstimation) {
-      throw new Error('Not implemented');
+      const estimation = this.fleet.getEstimatedDeliveryTimeInHours(
+        await this.fleet.groupByDeliverableBatches(
+          this.dispatchItems.map((v) => v.container),
+        ),
+      );
+
+      // Looping through current batch of dispatch items
+      for (const [k, v] of Object.entries(estimation)) {
+        // Finding index
+        const index = this.dispatchItems.findIndex(
+          (v) => v.container.containerId === k,
+        );
+
+        // estimated hours
+        this.dispatchItems[index].estimatedDeliveryTimeInHours = v;
+      }
     }
 
     return this.dispatchItems;
