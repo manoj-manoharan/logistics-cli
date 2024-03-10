@@ -9,18 +9,19 @@ export class Fleet implements IFleet {
   baseDeliveryCost: number;
   unitDistanceDeliveryCost: number;
   unitWeightDeliveryCost: number;
-  noOfVehicle: number;
-  vehicles: IVehicle[];
+  noOfVehicle: number = 0;
+  vehicles: IVehicle[] = [];
 
   constructor({
     baseDeliveryCost,
     unitDistanceDeliveryCost,
     unitWeightDeliveryCost,
+    vehicles,
   }: IFleet) {
     this.setBaseDeliveryCost(baseDeliveryCost);
     this.setUnitDistanceDeliveryCost(unitDistanceDeliveryCost);
     this.setUnitWeightDeliveryCost(unitWeightDeliveryCost);
-    this.setNoOfVehicle(0);
+    this.setVehicles(vehicles);
   }
 
   setBaseDeliveryCost(v: number): void {
