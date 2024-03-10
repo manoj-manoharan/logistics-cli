@@ -123,7 +123,7 @@ describe('Delivery cost and time estimation', () => {
     expect(
       await dispatcher
         .addToDispatch(input)
-        .then(() => dispatcher.getPreparedItemsForDispatching()),
+        .then(() => dispatcher.getPreparedItemsForDispatching({})),
     ).toStrictEqual(expectedOutput);
   });
 
@@ -278,9 +278,11 @@ describe('Delivery cost and time estimation', () => {
     const dispatcher = new Dispatcher({ fleet });
     // Adding to dispatch batch
     expect(
-      await dispatcher
-        .addToDispatch(input)
-        .then(() => dispatcher.getPreparedItemsForDispatching(true)),
+      await dispatcher.addToDispatch(input).then(() =>
+        dispatcher.getPreparedItemsForDispatching({
+          withTimeEstimation: true,
+        }),
+      ),
     ).toStrictEqual(expectedOutput);
   });
 });

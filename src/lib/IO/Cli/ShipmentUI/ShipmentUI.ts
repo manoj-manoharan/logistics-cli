@@ -61,7 +61,7 @@ export class ShipmentUI {
               distance,
             },
           }),
-          discountCode: offerCode,
+          discountCode: offerCode || '',
         });
 
         if (this.parcels.length === this.noOfPackages) {

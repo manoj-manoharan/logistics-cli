@@ -21,9 +21,11 @@ export class Dispatcher implements IDispatcher {
     return this.fleet;
   }
 
-  async getPreparedItemsForDispatching(
+  async getPreparedItemsForDispatching({
     withTimeEstimation = false,
-  ): Promise<Array<IDispatchItem>> {
+  }: {
+    withTimeEstimation?: boolean;
+  }): Promise<Array<IDispatchItem>> {
     // Only when true, calculate the estimated delivery time for all the items in dispatch list
     // and update it to items in the list
     if (withTimeEstimation) {
