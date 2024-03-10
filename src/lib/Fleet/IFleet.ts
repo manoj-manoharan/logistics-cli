@@ -1,5 +1,5 @@
 import { IContainer } from '../Container/IContainer.js';
-import { IVehicle } from './IVehicle.js';
+import { IVehicle } from '../Vehicle/IVehicle.js';
 
 export interface IFleet {
   baseDeliveryCost: number;
@@ -12,6 +12,8 @@ export interface IFleet {
   setVehicles(v: Array<IVehicle>): void;
   addVehicle(v: IVehicle): void;
   getVehicles(): Array<IVehicle>;
+
+  getDeliveryCost(container: IContainer): number;
 
   groupByDeliverableBatches(
     containers: Array<IContainer>,

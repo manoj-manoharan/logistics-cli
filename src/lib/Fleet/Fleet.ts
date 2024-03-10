@@ -2,8 +2,8 @@ import isArray from '../../util/isArray.js';
 import isNumberAndEqOrGtThanZero from '../../util/isNumberAndEqOrGtThanZero.js';
 import { IContainer } from '../Container/IContainer.js';
 import { IFleet } from './IFleet.js';
-import { IVehicle } from './IVehicle.js';
-import { Vehicle } from './Vehicle.js';
+import { IVehicle } from '../Vehicle/IVehicle.js';
+import { Vehicle } from '../Vehicle/Vehicle.js';
 
 export class Fleet implements IFleet {
   baseDeliveryCost: number;
@@ -125,5 +125,13 @@ export class Fleet implements IFleet {
     }
 
     throw new Error('Not implemented');
+  }
+
+  getDeliveryCost(c: IContainer): number {
+    return (
+      this.baseDeliveryCost +
+      (c.dimension.weight * this.unitWeightDeliveryCost +
+        c.route.distance * this.unitDistanceDeliveryCost)
+    );
   }
 }

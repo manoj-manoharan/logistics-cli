@@ -1,5 +1,5 @@
-import isObject from '../../util/isObject.js';
-import isString from '../../util/isString.js';
+import { ConditionalShippingDiscount } from '../../model/ConditionalShippingDiscount.js';
+import isArray from '../../util/isArray.js';
 import { IContainer } from '../Container/IContainer.js';
 import { IFleet } from '../Fleet/IFleet.js';
 import { IDispatchItem, IDispatcher } from './IDispatcher.js';
@@ -24,25 +24,52 @@ export class Dispatcher implements IDispatcher {
   async getDispatchItems(
     withTimeEstimation = false,
   ): Promise<Array<IDispatchItem>> {
-    //
-    // TODO:Only when true, calculate the estimated delivery time for all the items in dispatch list
+    // TODO: Only when true, calculate the estimated delivery time for all the items in dispatch list
     // and update it to items in the list
     if (withTimeEstimation) {
       throw new Error('Not implemented');
     }
 
-    // TODO: Return the updated dispatch list items
-    throw new Error('Not implemented');
+    return this.dispatchItems;
   }
 
   async addToDispatch(
-    v: Pick<IDispatchItem, 'discountCode' | 'container'>,
+    v: Array<Pick<IDispatchItem, 'discountCode' | 'container'>>,
   ): Promise<void> {
-    if (!(isObject(v) && isString(v.discountCode))) {
-      throw new Error('Dispatch item not valid.');
+    //
+    if (!isArray(v)) {
+      throw new Error('Parameter is not a valid list.');
     }
 
-    // TODO : Calculate discountPrice, linePrice & totalPrice and add the container item to dispatch list
-    throw new Error('Not implemented');
+    if (!v.length) return;
+
+    //  Calculate discountPrice, linePrice & totalPrice and add the container item to dispatch list
+    const getFormattedDispatchItem = async (
+      params: Pick<IDispatchItem, 'container' | 'discountCode'>,
+    ): Promise<IDispatchItem> => {
+      const { container, discountCode } = params;
+
+      const linePrice = this.fleet.getDeliveryCost(container);
+
+      const totalPrice = await ConditionalShippingDiscount.getDiscountedPrice({
+        discountCode,
+        originalPrice: linePrice,
+        weight: container.dimension.weight,
+        distance: container.route.distance,
+      });
+
+      return {
+        container,
+        discountCode,
+        linePrice,
+        totalPrice,
+        discountPrice: linePrice - totalPrice,
+        estimatedDeliveryTimeInHours: -1,
+      };
+    };
+
+    for (const item of v) {
+      this.dispatchItems.push(await getFormattedDispatchItem(item));
+    }
   }
 }

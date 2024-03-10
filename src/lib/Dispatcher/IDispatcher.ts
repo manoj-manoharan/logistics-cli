@@ -21,6 +21,6 @@ export interface IDispatcher {
   getDispatchItems(withTimeEstimation: boolean): Promise<Array<IDispatchItem>>;
 
   addToDispatch(
-    v: Pick<IDispatchItem, 'discountCode' | 'container'>,
+    v: Array<Pick<IDispatchItem, 'discountCode' | 'container'>>,
   ): Promise<void>;
 }
