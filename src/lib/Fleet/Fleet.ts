@@ -3,6 +3,7 @@ import isNumberAndEqOrGtThanZero from '../../util/isNumberAndEqOrGtThanZero.js';
 import { IContainer } from '../Container/IContainer.js';
 import { IFleet } from './IFleet.js';
 import { Vehicle } from '../Vehicle/Vehicle.js';
+import { Batcher } from '../Batcher/Batcher.js';
 
 export class Fleet implements IFleet {
   baseDeliveryCost: number;
@@ -98,7 +99,7 @@ export class Fleet implements IFleet {
 
   async groupByDeliverableBatches(
     containers: Array<IContainer>,
-  ): Promise<Array<Array<IContainer>>> {
+  ): Promise<Map<number, Array<IContainer>>> {
     // validation
     if (!isArray(containers)) {
       throw new Error('Containers are not a valid list');
@@ -106,7 +107,12 @@ export class Fleet implements IFleet {
 
     if (!containers.length) return [];
 
-    throw new Error('Not implemented.');
+    if (!this.vehicles.length) return [];
+
+    // using first vehicle's capacity as max, because all vehicles are same type in current case
+    const maxCapacity = this.vehicles[0].maxWeightCapacity;
+
+    return new Batcher().getBatchContainersMap({ maxCapacity, containers });
   }
 
   getEstimatedDeliveryTimeInHours(batches: Array<Array<IContainer>>): {

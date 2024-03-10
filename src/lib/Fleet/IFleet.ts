@@ -17,7 +17,7 @@ export interface IFleet {
 
   groupByDeliverableBatches(
     containers: Array<IContainer>,
-  ): Promise<Array<Array<IContainer>>>;
+  ): Promise<Map<number, Array<IContainer>>>;
 
   getEstimatedDeliveryTimeInHours(batches: Array<Array<IContainer>>): {
     [key: IContainer['containerId']]: number;

@@ -3,14 +3,14 @@ export function optimalSubsetWithMaxOccupancy({
   arr,
   maxCapacity,
 }: {
-  arr: Array<[number, number]>;
+  arr: Array<[number, number, string]>;
   maxCapacity: number;
-}): Array<[number, number]> {
+}): Array<[number, number, string]> {
   // Declaring type
   type MemoRes = {
     totalWeight: number;
     totalDistance: number;
-    packages: Array<[number, number]>;
+    packages: Array<[number, number, string]>;
   };
 
   // Used to memoize the range computations
@@ -39,7 +39,7 @@ export function optimalSubsetWithMaxOccupancy({
     if (index === arr.length) return stack;
 
     // Taking the current item's weight and distance
-    const [currWeight, currDistance] = arr[index];
+    const [currWeight, currDistance, id] = arr[index];
 
     // If capacity exceed, should not process curr item
     let withCurr = stack;
@@ -48,7 +48,7 @@ export function optimalSubsetWithMaxOccupancy({
       withCurr = recursion(remainingCapacity - currWeight, index + 1, {
         totalWeight: stack.totalWeight + currWeight,
         totalDistance: stack.totalDistance + currDistance,
-        packages: [...stack.packages, [currWeight, currDistance]],
+        packages: [...stack.packages, [currWeight, currDistance, id]],
       });
     }
 
