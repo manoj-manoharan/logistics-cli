@@ -2,7 +2,7 @@
 # How to run
 
 
-First run the command `npm run build`, to build the project.
+First run the command `yarn install` to install the dependencies, and then  `npm run build` to build the project.
 
 Use can then use: 
 
