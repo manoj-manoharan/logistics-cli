@@ -36,12 +36,16 @@ export class ShipmentUI {
     this.rl.question('Enter base cost and number of parcels: ', (input) => {
       const [baseCostStr, numberOfPackagesStr] = input.split(' ');
 
-      if (!isString(baseCostStr) || !isString(numberOfPackagesStr)) {
-        throw new Error('Please check base cost & no of packages input');
+      if (isString(baseCostStr) && isString(numberOfPackagesStr)) {
+        this.baseCost = Number(baseCostStr);
+        this.noOfPackages = Number(numberOfPackagesStr);
+        this.second();
+      } else {
+        console.error(
+          'Please enter the correct inputs for base cost and number of parcels',
+        );
+        this.first();
       }
-      this.baseCost = Number(baseCostStr);
-      this.noOfPackages = Number(numberOfPackagesStr);
-      this.second();
     });
   }
 
@@ -76,9 +80,10 @@ export class ShipmentUI {
             this.second();
           }
         } catch (e) {
-          throw new Error(
+          console.error(
             'Please check the inputs for pkgID, weight, distance & discountCode',
           );
+          this.second();
         }
       },
     );

@@ -11,29 +11,30 @@ export class DeliveryTimeEstimation extends ShipmentUI {
           input.split(' ');
 
         if (
-          !isString(noOfVehiclesStr) ||
-          !isString(maxSpeedStr) ||
-          !isString(maxWeightCapacityStr)
+          isString(noOfVehiclesStr) &&
+          isString(maxSpeedStr) &&
+          isString(maxWeightCapacityStr)
         ) {
-          throw new Error(
+          const noOfVehicles = Number(noOfVehiclesStr);
+          const maxSpeed = Number(maxSpeedStr);
+          const maxWeightCapacity = Number(maxWeightCapacityStr);
+
+          for (let i = 0; i < noOfVehicles; ++i) {
+            this.fleet.addVehicle(
+              new Vehicle({
+                maxWeightCapacity,
+                maxSpeed,
+              }),
+            );
+          }
+
+          this.fourth();
+        } else {
+          console.error(
             'Please check the inputs for number of vehicles, Maximum speed & Max weight capacity',
           );
+          this.third();
         }
-
-        const noOfVehicles = Number(noOfVehiclesStr);
-        const maxSpeed = Number(maxSpeedStr);
-        const maxWeightCapacity = Number(maxWeightCapacityStr);
-
-        for (let i = 0; i < noOfVehicles; ++i) {
-          this.fleet.addVehicle(
-            new Vehicle({
-              maxWeightCapacity,
-              maxSpeed,
-            }),
-          );
-        }
-
-        this.fourth();
       },
     );
   }
