@@ -7,7 +7,7 @@ import { IFleet } from '../src/lib/Fleet/IFleet.js';
 describe('Delivery cost and time estimation', () => {
   let fleet: IFleet;
 
-  beforeAll(() => {
+  beforeEach(() => {
     // Defining fleet
     fleet = new Fleet({
       baseDeliveryCost: 100,
@@ -273,6 +273,94 @@ describe('Delivery cost and time estimation', () => {
         totalPrice: 2125,
         discountPrice: 0,
         estimatedDeliveryTimeInHours: 4.18,
+      },
+    ];
+
+    // Initializing
+    const dispatcher = new Dispatcher({ fleet });
+    // Adding to dispatch batch
+    expect(
+      await dispatcher.addToDispatch(input).then(() =>
+        dispatcher.getPreparedItemsForDispatching({
+          withTimeEstimation: true,
+        }),
+      ),
+    ).toStrictEqual(expectedOutput);
+  });
+
+  it('calculate discount: scenario 3', async () => {
+    fleet = new Fleet({
+      baseDeliveryCost: 100,
+      unitDistanceDeliveryCost: 5,
+      unitWeightDeliveryCost: 10,
+      vehicles: [
+        {
+          maxSpeed: 50,
+          maxWeightCapacity: 200,
+        },
+      ],
+    });
+
+    const input = [
+      {
+        container: new Container({
+          containerId: 'PKG1',
+          dimension: {
+            weight: 70,
+          },
+          route: {
+            distance: 50,
+          },
+        }),
+        discountCode: 'OFR001',
+      },
+      {
+        container: new Container({
+          containerId: 'PKG2',
+          dimension: {
+            weight: 150,
+          },
+          route: {
+            distance: 100,
+          },
+        }),
+        discountCode: 'OFR002',
+      },
+      {
+        container: new Container({
+          containerId: 'PKG3',
+          dimension: {
+            weight: 80,
+          },
+          route: {
+            distance: 200,
+          },
+        }),
+        discountCode: 'OFR003',
+      },
+    ];
+
+    const expectedOutput: Array<IDispatchItem> = [
+      {
+        ...input[0],
+        linePrice: 1050,
+        totalPrice: 945,
+        discountPrice: 105,
+        estimatedDeliveryTimeInHours: 1,
+      },
+      {
+        ...input[1],
+        linePrice: 2100,
+        totalPrice: 1953,
+        discountPrice: 147,
+        estimatedDeliveryTimeInHours: 10,
+      },
+      {
+        ...input[2],
+        linePrice: 1900,
+        totalPrice: 1805,
+        discountPrice: 95,
+        estimatedDeliveryTimeInHours: 4,
       },
     ];
 
