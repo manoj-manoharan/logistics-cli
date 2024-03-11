@@ -1,3 +1,4 @@
+import isString from '../../../../util/isString.js';
 import { Vehicle } from '../../../Vehicle/Vehicle.js';
 import { ShipmentUI } from './ShipmentUI.js';
 
@@ -8,6 +9,16 @@ export class DeliveryTimeEstimation extends ShipmentUI {
       (input) => {
         const [noOfVehiclesStr, maxSpeedStr, maxWeightCapacityStr] =
           input.split(' ');
+
+        if (
+          !isString(noOfVehiclesStr) ||
+          !isString(maxSpeedStr) ||
+          !isString(maxWeightCapacityStr)
+        ) {
+          throw new Error(
+            'Please check the inputs for number of vehicles, Maximum speed & Max weight capacity',
+          );
+        }
 
         const noOfVehicles = Number(noOfVehiclesStr);
         const maxSpeed = Number(maxSpeedStr);
@@ -42,4 +53,8 @@ export class DeliveryTimeEstimation extends ShipmentUI {
   }
 }
 
-new DeliveryTimeEstimation().first();
+try {
+  new DeliveryTimeEstimation().first();
+} catch (e) {
+  console.error(e.message);
+}

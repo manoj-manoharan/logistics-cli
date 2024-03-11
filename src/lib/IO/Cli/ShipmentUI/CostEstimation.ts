@@ -16,4 +16,8 @@ export class CostEstimationUI extends ShipmentUI {
   }
 }
 
-new CostEstimationUI().first();
+try {
+  new CostEstimationUI().first();
+} catch (e) {
+  console.error(e.message);
+}

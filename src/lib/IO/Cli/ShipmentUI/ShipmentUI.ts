@@ -3,6 +3,7 @@ import { IContainer } from '../../../Container/IContainer.js';
 import { Container } from '../../../Container/Container.js';
 import { Fleet } from '../../../Fleet/Fleet.js';
 import { Dispatcher } from '../../../Dispatcher/Dispatcher.js';
+import isString from '../../../../util/isString.js';
 
 export class ShipmentUI {
   baseCost: number;
@@ -34,6 +35,10 @@ export class ShipmentUI {
   first(): void {
     this.rl.question('Enter base cost and number of parcels: ', (input) => {
       const [baseCostStr, numberOfPackagesStr] = input.split(' ');
+
+      if (!isString(baseCostStr) || !isString(numberOfPackagesStr)) {
+        throw new Error('Please check base cost & no of packages input');
+      }
       this.baseCost = Number(baseCostStr);
       this.noOfPackages = Number(numberOfPackagesStr);
       this.second();
@@ -44,30 +49,36 @@ export class ShipmentUI {
     this.rl.question(
       `Enter parcel ${
         this.parcels.length + 1
-      } details (name weight distance offerCode): `,
+      } details (pkgID weight distance offerCode): `,
       (input) => {
-        const [containerId, weightStr, distanceStr, offerCode] =
-          input.split(' ');
-        const weight = Number(weightStr);
-        const distance = Number(distanceStr);
+        try {
+          const [containerId, weightStr, distanceStr, offerCode] =
+            input.split(' ');
+          const weight = Number(weightStr);
+          const distance = Number(distanceStr);
 
-        this.parcels.push({
-          container: new Container({
-            containerId,
-            dimension: {
-              weight,
-            },
-            route: {
-              distance,
-            },
-          }),
-          discountCode: offerCode || '',
-        });
+          this.parcels.push({
+            container: new Container({
+              containerId,
+              dimension: {
+                weight,
+              },
+              route: {
+                distance,
+              },
+            }),
+            discountCode: offerCode || '',
+          });
 
-        if (this.parcels.length === this.noOfPackages) {
-          this.third();
-        } else {
-          this.second();
+          if (this.parcels.length === this.noOfPackages) {
+            this.third();
+          } else {
+            this.second();
+          }
+        } catch (e) {
+          throw new Error(
+            'Please check the inputs for pkgID, weight, distance & discountCode',
+          );
         }
       },
     );
