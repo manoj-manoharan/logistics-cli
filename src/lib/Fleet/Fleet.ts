@@ -114,6 +114,8 @@ export class Fleet implements IFleet {
     // using first vehicle's capacity as max, because all vehicles are same type in current case
     const maxCapacity = this.vehicles[0].maxWeightCapacity;
 
+    // TODO: This function call should be moved to a separate worker thread,
+    // so that it doesn't block main thread
     return new Batcher().getBatchContainersMap({ maxCapacity, containers });
   }
 
