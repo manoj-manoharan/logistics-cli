@@ -41,9 +41,11 @@ export class ShipmentUI {
         this.noOfPackages = Number(numberOfPackagesStr);
         this.second();
       } else {
+        console.log();
         console.error(
-          'Please enter the correct inputs for base cost and number of parcels',
+          '**Please enter the correct inputs for base cost and number of parcels**',
         );
+        console.log();
         this.first();
       }
     });
@@ -80,9 +82,11 @@ export class ShipmentUI {
             this.second();
           }
         } catch (e) {
+          console.log();
           console.error(
-            'Please check the inputs for pkgID, weight, distance & discountCode',
+            '**Please check the inputs for pkgID, weight, distance & discountCode**',
           );
+          console.log();
           this.second();
         }
       },

@@ -30,9 +30,11 @@ export class DeliveryTimeEstimation extends ShipmentUI {
 
           this.fourth();
         } else {
+          console.log();
           console.error(
-            'Please check the inputs for number of vehicles, Maximum speed & Max weight capacity',
+            '**Please check the inputs for number of vehicles, Maximum speed & Max weight capacity**',
           );
+          console.log();
           this.third();
         }
       },
